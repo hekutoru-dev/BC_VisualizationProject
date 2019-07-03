@@ -3,12 +3,17 @@ body {
   margin: 0;
 }
 
-#map{
-  height: 80%;
+
+#contaminantMap, #emergenciesMap{
+  height: 500px;
+  margin: 20px;
+}
+.leaflet-container{
+  height: 540px;
 }
 
 body,
-html {
+html, {
   height: 100%;
 }
 
