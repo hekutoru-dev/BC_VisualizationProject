@@ -14,9 +14,12 @@ function appendLeadingZeroes(n) {
     return n
 }
 var daysOfYear = []
-for (var d = new Date('01/01/2016'); d <= new Date(2016, 11, 31); d.setDate(d.getDate() + 1)) {
+var daysOfYearNoCero = []
+for (var d = new Date(2016, 0, 1); d <= new Date(2016, 11, 31); d.setDate(d.getDate() + 1)) {
     var dateString = appendLeadingZeroes(d.getDate()) + "/" + appendLeadingZeroes(d.getMonth() + 1) + "/" + d.getFullYear()
+    var dateStringNoCero = (d.getMonth()+1) + "/" + d.getDate() + "/" +  d.getFullYear();
     daysOfYear.push(dateString);
+    daysOfYearNoCero.push(dateStringNoCero)
 }
 
 
@@ -48,7 +51,7 @@ var baseLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.pn
 // ----------
 // Initial map with O3 at 01/01/2016
 var init = () => {
-    getData("O3", '01/01/2016');
+    getData("SO2", '01/01/2016');
 }
 
 // Update map
@@ -58,6 +61,7 @@ var init = () => {
 const createContaminantLayer = async (selectedContaminant, selectedDate) => {
     const url = `/contaminants/?q={"id_parameter":"${selectedContaminant}","date":"${selectedDate}"}`;
     d3.json(url, function (contaminants) {
+        console.log(`down ${selectedDate}`);
         var graphContaminant = contaminants.data;
         // debugger;
         var contaminantHeatArray = [];
@@ -87,13 +91,15 @@ const createContaminantLayer = async (selectedContaminant, selectedDate) => {
 const createEmergenciesLayer = async (selectedDate) => {
     const url = `/emergencies/?q={"date":"${selectedDate}"}`;
     d3.json(url, function (emergencies) {
+        console.log(`down ${selectedDate}`);
+        
         var graphEmergencies = emergencies.data;
         // debugger;
         var emergenciesHeatArray = [];
         for (let j = 0; j < graphEmergencies.length; j++) {
-            var value = graphEmergencies[j].value;
+            var value = graphEmergencies[j].count;
             if (value) {
-                emergenciesHeatArray.push([graphEmergencies[j].latitud, graphEmergencies[j].longitud, graphEmergencies[j].value]);
+                emergenciesHeatArray.push([graphEmergencies[j].latitud, graphEmergencies[j].longitud, graphEmergencies[j].count]);
             }
         }
         if (emergenciesHeatLayer !== undefined) {
@@ -115,20 +121,22 @@ const createEmergenciesLayer = async (selectedDate) => {
 // contaminant selection
 function getData(selCont) {
     createContaminantLayer(selCont, '01/01/2016');
-    createEmergenciesLayer("01/01/2016")
+    createEmergenciesLayer("1/1/2016")
 }
 
 
-
-
+var pollutant = 'O3'
 for (let i = 0; i < daysOfYear.length; i++) {
-    var pollutant = 'O3'
-    var date = daysOfYear[i];
-    myVar = setTimeout(function () {
+
+    
+    setTimeout(function () {
+        var date = daysOfYear[i];
+        var dateNoCero = daysOfYearNoCero[i]
+        d3.select('#date-counter').html(`<h3>${daysOfYear[i]}</h3>`);
         createContaminantLayer(pollutant, date);
-        createEmergenciesLayer(date);
-    }, 3000);
-    console.log(i)
+        createEmergenciesLayer(dateNoCero);
+        console.log(i)
+    }, 200 * i);
 }
 
 
