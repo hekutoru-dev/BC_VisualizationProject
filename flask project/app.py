@@ -16,11 +16,27 @@ connectionString = "mongodb://dbAdmin:Vol8e3v5XLGYrwTK@cluster0-shard-00-00-0den
 dbClient = MongoClient(connectionString)
 db = dbClient["cdmx_pollution"]
 
-# Route to render index.html template using data from Mongo
-
+# -------------------------------
+# | Routes to render HTML files |
+# -------------------------------
 @app.route("/")
 def home():
     return render_template("index.html")
+@app.route("/data")
+def data():
+    return render_template("data.html")
+@app.route("/overview")
+def overview():
+    return render_template("overview.html")
+@app.route("/map")
+def map():
+    return render_template("heatmap.html")
+@app.route("/plots")
+def plots():
+    return render_template("plots.html")
+@app.route("/stations")
+def stations():
+    return render_template("map.html")
    
 @app.route("/contaminants/")
 def data1():
@@ -35,7 +51,7 @@ def data1():
         return jsonify(result)
 
 
-def getContaminants(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getContaminants(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -68,10 +84,6 @@ def getContaminants(match, project = {}, skip = 0, limit = 100, orient='records'
         return docs
 
 
-
-
-
-
 # -----------------
 @app.route("/emergencies/")
 def data2():
@@ -86,7 +98,7 @@ def data2():
         return jsonify(result)
 
 
-def getEmergencies(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getEmergencies(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -121,10 +133,99 @@ def getEmergencies(match, project = {}, skip = 0, limit = 100, orient='records')
 
 
 
+# -----------------
+@app.route("/municipality/")
+def data3():
+        _args = verifyQueryParameters(request.args)
+        docs = getMunicipality(**_args)
+        df = pd.DataFrame(list(docs))
+        print(df.head(5))
+        result = {
+            'data':  json.loads(df.to_json(orient='records'))
+                # 'data': {}
+        }
+        return jsonify(result)
 
 
+def getMunicipality(match, project = {}, skip = 0, limit = 100, orient='records'):
+        _pipeline = [
+            {
+                '$match': {
+                    **match
+                }
+            },
+            {
+                '$project': {
+                        '_id': 0
+                }
+            }, 
+            {
+                '$sort': {
+                    'date': 1
+                }
+            }, 
+            {
+                '$skip': skip
+            }, 
+            {
+                '$limit': limit
+            }            
+        ]
+        print(_pipeline)
+        if len(project) > 0:
+            _pipeline.append({'$project': { **project }})
+        docs = db.daily_pollutants.aggregate(_pipeline)
+        # for doc in docs:
+                # print(doc)
+        return docs
+# ------------------------
+
+# -----------------
+@app.route("/municipality_and_emergencies/")
+def data4():
+        _args = verifyQueryParameters(request.args)
+        docs = getMunAndEmer(**_args)
+        df = pd.DataFrame(list(docs))
+        print(df.head(5))
+        result = {
+            'data':  json.loads(df.to_json(orient='records'))
+                # 'data': {}
+        }
+        return jsonify(result)
 
 
+def getMunAndEmer(match, project = {}, skip = 0, limit = 100, orient='records'):
+        _pipeline = [
+            {
+                '$match': {
+                    **match
+                }
+            },
+            {
+                '$project': {
+                        '_id': 0
+                }
+            }, 
+            {
+                '$sort': {
+                    'date': 1
+                }
+            }, 
+            {
+                '$skip': skip
+            }, 
+            {
+                '$limit': limit
+            }            
+        ]
+        print(_pipeline)
+        if len(project) > 0:
+            _pipeline.append({'$project': { **project }})
+        docs = db.all_data.aggregate(_pipeline)
+        # for doc in docs:
+                # print(doc)
+        return docs
+# ------------------------
 
 
 
