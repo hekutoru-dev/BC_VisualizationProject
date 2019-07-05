@@ -23,25 +23,29 @@ db = dbClient["cdmx_pollution"]
 def home():
     return render_template("index.html")
 
-@app.route("/overview.html")
+@app.route("/overview")
 def overview():
     return render_template("overview.html")
 
-@app.route("/map.html")
-def map():
-    return render_template("map.html")
-
-@app.route("/plots.html")
+@app.route("/visualizations")
 def plots():
-    return render_template("plots.html")
+    return render_template("visualizations.html")
 
-@app.route("/data.html")
+@app.route("/data")
 def datah():
     return render_template("data.html")
 
-@app.route("/index.html")
-def indexp():
-    return render_template("index.html")
+@app.route("/heatmaps")
+def heatmaps():
+    return render_template("heatmap.html")
+
+@app.route("/townhalls")
+def townhalls():
+    return render_template("townhalls.html")
+
+@app.route("/stations")
+def stations():
+    return render_template("stations.html")
 
 #######  Termina HTML
 
@@ -159,7 +163,7 @@ def data3():
         return jsonify(result)
 
 
-def getMunicipality(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getMunicipality(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -206,7 +210,7 @@ def data4():
         return jsonify(result)
 
 
-def getMunAndEmer(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getMunAndEmer(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -277,15 +281,6 @@ def verifyQueryParameters(args):
 
 ######Termina Mapa Interactivo
 
-
-#######  Empieza Pollutans Levels Town-Hall and Stations
-@app.route("/stations.html")
-def stations():
-    return render_template("stations.html")
-
-@app.route("/townhalls.html")
-def townhalls():
-    return render_template("townhalls.html")
 
 @app.route("/diseases/")
 def diseases():
