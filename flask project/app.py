@@ -46,6 +46,10 @@ def indexp():
 #######  Termina HTML
 
 ###### Empieza Mapa Interactivo
+@app.route("/heatmap.html")
+def heatmap():
+    return render_template("heatmap.html")
+
 @app.route("/contaminants/")
 def data1():
         _args = verifyQueryParameters(request.args)
@@ -59,7 +63,7 @@ def data1():
         return jsonify(result)
 
 
-def getContaminants(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getContaminants(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -91,6 +95,7 @@ def getContaminants(match, project = {}, skip = 0, limit = 100, orient='records'
                 # print(doc)
         return docs
 
+
 # -----------------
 @app.route("/emergencies/")
 def data2():
@@ -105,7 +110,7 @@ def data2():
         return jsonify(result)
 
 
-def getEmergencies(match, project = {}, skip = 0, limit = 100, orient='records'):
+def getEmergencies(match, project = {}, skip = 0, limit = 1000, orient='records'):
         _pipeline = [
             {
                 '$match': {
@@ -137,6 +142,103 @@ def getEmergencies(match, project = {}, skip = 0, limit = 100, orient='records')
                 # print(doc)
         return docs
 # -----------------
+
+
+
+# -----------------
+@app.route("/municipality/")
+def data3():
+        _args = verifyQueryParameters(request.args)
+        docs = getMunicipality(**_args)
+        df = pd.DataFrame(list(docs))
+        print(df.head(5))
+        result = {
+            'data':  json.loads(df.to_json(orient='records'))
+                # 'data': {}
+        }
+        return jsonify(result)
+
+
+def getMunicipality(match, project = {}, skip = 0, limit = 100, orient='records'):
+        _pipeline = [
+            {
+                '$match': {
+                    **match
+                }
+            },
+            {
+                '$project': {
+                        '_id': 0
+                }
+            }, 
+            {
+                '$sort': {
+                    'date': 1
+                }
+            }, 
+            {
+                '$skip': skip
+            }, 
+            {
+                '$limit': limit
+            }            
+        ]
+        print(_pipeline)
+        if len(project) > 0:
+            _pipeline.append({'$project': { **project }})
+        docs = db.daily_pollutants.aggregate(_pipeline)
+        # for doc in docs:
+                # print(doc)
+        return docs
+# ------------------------
+
+# -----------------
+@app.route("/municipality_and_emergencies/")
+def data4():
+        _args = verifyQueryParameters(request.args)
+        docs = getMunAndEmer(**_args)
+        df = pd.DataFrame(list(docs))
+        print(df.head(5))
+        result = {
+            'data':  json.loads(df.to_json(orient='records'))
+                # 'data': {}
+        }
+        return jsonify(result)
+
+
+def getMunAndEmer(match, project = {}, skip = 0, limit = 100, orient='records'):
+        _pipeline = [
+            {
+                '$match': {
+                    **match
+                }
+            },
+            {
+                '$project': {
+                        '_id': 0
+                }
+            }, 
+            {
+                '$sort': {
+                    'date': 1
+                }
+            }, 
+            {
+                '$skip': skip
+            }, 
+            {
+                '$limit': limit
+            }            
+        ]
+        print(_pipeline)
+        if len(project) > 0:
+            _pipeline.append({'$project': { **project }})
+        docs = db.all_data.aggregate(_pipeline)
+        # for doc in docs:
+                # print(doc)
+        return docs
+# ------------------------
+
 
 
 
@@ -175,7 +277,8 @@ def verifyQueryParameters(args):
 
 ######Termina Mapa Interactivo
 
-#######  Empieza Pollutans Levels Town-Hall
+
+#######  Empieza Pollutans Levels Town-Hall and Stations
 @app.route("/stations.html")
 def stations():
     return render_template("stations.html")
@@ -238,7 +341,7 @@ def getDiseases(match, project = {}, skip = 0, limit = 366, orient='records'):
         # for doc in docs:
                 # print(doc)
         return docs
-###### Termina Pollutans Levels Town-Hall
+###### Termina Pollutans Levels Town-HallTown and Stations
         
 
 if __name__ == "__main__":
