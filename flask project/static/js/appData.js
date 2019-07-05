@@ -1,4 +1,6 @@
-var url = "/data";
+var url = "/dashData";
+
+index.getElementById(inputName).attribute = "Alvaro Obregon"
 
 console.log("hola");
 
@@ -23,3 +25,4 @@ d3.json(url).then(function(response) {
 
 
 });
+

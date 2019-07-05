@@ -1,0 +1,37 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body,html {
+    height: 50%;
+}
+
+#mapa {
+    height: 50%;
+}
+
+/* Used for townhalls.html & townhalls.css */
+.row{
+    height: 100%;
+}
+
+#mapa-townhalls {
+    height: 150%;
+    width: 100%;
+}
+
+.container {
+    padding-left: 50px;
+    margin-left: 50px;
+    height: 200%;
+}
+
+#pollutant-selector {
+    width: 20%;
+}
+
+.leaflet-container {
+    background-color:rgba(255,0,0,0.0);
+}
+

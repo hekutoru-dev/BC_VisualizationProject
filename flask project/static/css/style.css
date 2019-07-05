@@ -124,7 +124,7 @@ i {
         padding:10px 20px;
         color:#fff}
     #mainNav .navbar-nav>li.nav-item>a:focus,#mainNav .navbar-nav>li.nav-item>a:hover{
-        color:rgba(255,255,255,.8)
+        color: #199e8f
     }
 }
 @media only screen and (min-width:992px) {
@@ -236,7 +236,7 @@ header.masthead .page-heading .subheading,header.masthead .site-heading .subhead
   max-width: 50%;
   height auto;
   border: 5px solid gray;
-  margin-top: 15px;
+  margin-top: 15px
 }
 
 .row-centered {
@@ -250,5 +250,10 @@ header.masthead .page-heading .subheading,header.masthead .site-heading .subhead
     text-align:left;
     /* inline-block space fix */
     margin-right:-4px;
-    text-align: center;
+    text-align: center
+}
+
+.activado{
+    background-color: #199e8f;
+    color: white
 }

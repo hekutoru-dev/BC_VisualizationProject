@@ -25,7 +25,7 @@ var init = () => {
 
 // Update map
 var createLayer = (selectedContaminant, selectedDate) => {
-  d3.json("/data", function (error, contaminants) {
+  d3.json("/data2", function (error, contaminants) {
     if (error) throw error;
     var cont = contaminants;
     console.log(cont[0].CO)
@@ -53,8 +53,8 @@ var createLayer = (selectedContaminant, selectedDate) => {
     }
 
     heatLayer = L.heatLayer(heatArray, {
-      radius: 50,
-      blur: 35
+      radius: 43,
+      blur: 20
     }).addTo(myMap);
 
 
