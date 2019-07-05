@@ -13,7 +13,7 @@ body,html {
 
 /* Used for townhalls.html & townhalls.css */
 .row{
-    height: 100%;
+    height: 300px;
 }
 
 #mapa-townhalls {
