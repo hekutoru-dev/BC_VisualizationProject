@@ -257,3 +257,12 @@ header.masthead .page-heading .subheading,header.masthead .site-heading .subhead
     background-color: #199e8f;
     color: white
 }
+
+
+.col-md-6, .col-md-12{
+    max-width: 100%;
+    height auto;
+    border: 5px solid gray;
+    margin-top: 15px;
+    justify-content: center;
+}
