@@ -98,6 +98,8 @@ d3.json(url, function(response) {
   cases = response.cases;
   O3 = response.O3;
   PM10 = response.PM10;
+  O3m = response.O3m[0];
+  PM10m = response.PM10m[0];
 
   dataset = response
   console.log(e.target.feature.properties.NOMGEO);
@@ -108,7 +110,7 @@ d3.json(url, function(response) {
     cplot=response.PM10;
 
     var a = [ "Cases_100K"];
-    var b = [ "PM10 (ppb)"];
+    var b = [ "PM10_ppb"];
   
     for (var i = 0; i < O3.length; i++) { 
       a.push(cases[i]);
@@ -124,17 +126,21 @@ d3.json(url, function(response) {
             b
           ],
           axes: {
-            cases: 'y',
-            PM10: 'y2'
+            Cases_100K: 'y',
+            PM10_ppb: 'y2'
           }
       },
       point: {
         show: false
     },
       axis: {
-          y2: {
-              show: true
-          }
+        y: {
+          label: 'Cases'
+      },
+      y2: {
+          show: true,
+          label: 'PM10'
+      }
       },
       title: {
         show: true,
@@ -156,6 +162,51 @@ d3.json(url, function(response) {
   .style('font-size', '1.8em')
   .style("dominant-baseline", "central");
 
+  var chart2 = c3.generate({
+    bindto: '#graph2',
+    data: {
+        columns: [
+            ['data', 0]
+        ],
+        type: 'gauge',
+        onclick: function (d, i) { console.log("onclick", d, i); },
+        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    gauge: {
+        label: {
+            format: function(value, ratio) {
+                return value;
+            },
+            show: true // to turn off the min/max labels.
+        },
+    min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
+    max: 40, // 100 is default
+    units: 'average',
+    width: 40 // for adjusting arc thickness
+    },
+    color: {
+        pattern: ['green', 'orange', 'red'], // the three color levels for the percentage values.
+        threshold: {
+            unit: 'value', // percentage is default
+            max: 100, // 100 is default
+            values: [20, 40, 80]
+        }
+    },
+    size: {
+        height: 100
+    }
+});
+
+
+setTimeout(function () {
+  chart2.load({
+        columns: [['data', PM10m]]
+    });
+}, 1000);
+
+
+
   
 
 
@@ -164,7 +215,7 @@ d3.json(url, function(response) {
   console.log("ES O3");
   cplot=response.O3;
   var a = [ "Cases_100K"];
-  var b = [ "O3 (ug/m3)"];
+  var b = [ "O3_ugm3"];
 
   for (var i = 0; i < O3.length; i++) { 
     a.push(cases[i]);
@@ -180,17 +231,21 @@ d3.json(url, function(response) {
           b
         ],
         axes: {
-          cases: 'y',
-          O3: 'y2'
+          Cases_100K: 'y',
+          O3_ugm3: 'y2'
         }
     },
     point: {
       show: false
   },
     axis: {
-        y2: {
-            show: true
-        }
+      y: {
+        label: 'Cases'
+    },
+    y2: {
+        show: true,
+        label: 'O3'
+    }
     },
     title: {
       show: true,
@@ -212,6 +267,50 @@ d3.select('#graph .c3-title')
   d3.select('#graph .c3-title')
   .style('font-size', '1.8em')
   .style("dominant-baseline", "central");
+
+  var chart2 = c3.generate({
+    bindto: '#graph2',
+    data: {
+        columns: [
+            ['data', 0]
+        ],
+        type: 'gauge',
+        onclick: function (d, i) { console.log("onclick", d, i); },
+        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    gauge: {
+        label: {
+            format: function(value, ratio) {
+                return value;
+            },
+            show: true // to turn off the min/max labels.
+        },
+    min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
+    max: 70, // 100 is default
+    units: 'average',
+    width: 40 // for adjusting arc thickness
+    },
+    color: {
+        pattern: ['green', 'orange', 'red'], // the three color levels for the percentage values.
+        threshold: {
+            unit: 'value', // percentage is default
+            max: 100, // 100 is default
+            values: [20, 70, 100]
+        }
+    },
+    size: {
+        height: 100
+    }
+});
+
+
+setTimeout(function () {
+  chart2.load({
+        columns: [['data', O3m]]
+    });
+}, 1000);
+
  }});
 }
 //}

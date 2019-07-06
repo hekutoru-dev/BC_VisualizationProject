@@ -292,14 +292,18 @@ def diseases():
         jsindex=list(df['index'])
         jscases=list(df['CASES'])
         jsO3=list(df['O3'])
+        jsO3m=list(df['O3m'])
         jsPM10=list(df['PM10'])
+        jsPM10m=list(df['PM10m'])
 
 
         trace = {
                 "date":jsindex,
                 "cases":jscases,
                 "O3":jsO3,
-                "PM10":jsPM10
+                "PM10":jsPM10,
+                "O3m":jsO3m,
+                "PM10m":jsPM10m
         }
 
         return jsonify(trace)
