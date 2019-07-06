@@ -47,6 +47,9 @@ def townhalls():
 def stations():
     return render_template("stations.html")
 
+@app.route("/team")
+def team():
+    return render_template("team.html")
 #######  Termina HTML
 
 ###### Empieza Mapa Interactivo
