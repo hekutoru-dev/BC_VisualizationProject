@@ -36,7 +36,11 @@ for (var d = new Date(2016, 0, 1); d <= new Date(2016, 11, 31); d.setDate(d.getD
 // Contaminant base map
 var contaminantMap = new L.Map('contaminantMap', {
     center: new L.LatLng(19.3259512,-99.1402701),
-    zoom: 11
+    zoom: 11,
+    dragging: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    zoomControl: false
 });
 var baseLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>",
@@ -49,7 +53,11 @@ L.geoJson(cdmxjson, {fillOpacity:0, color:'#8A8A8A'}).addTo(contaminantMap);
 // Emergencies base map
 var emergenciesMap = new L.Map('emergenciesMap', {
     center: new L.LatLng(19.3259512,-99.1402701),
-    zoom: 11
+    zoom: 11,
+    dragging: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    zoomControl: false
 });
 var baseLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>",
