@@ -104,7 +104,7 @@ d3.json(url, function(response) {
   dataset = response
   console.log(e.target.feature.properties.NOMGEO);
 
-  //////////////////////////////////////PM10///////////////////////
+  // ============================== PM10 ==============================
   if (seleccion=="PM10") {
     console.log("ES PM10");
     cplot=response.PM10;
@@ -210,7 +210,7 @@ setTimeout(function () {
   
 
 
-//////////////////////////////////////O3///////////////////////
+// ============================== O3 ==============================
  } else {
   console.log("ES O3");
   cplot=response.O3;
