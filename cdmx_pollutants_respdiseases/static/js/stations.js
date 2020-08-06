@@ -76,60 +76,6 @@ function style(feature) {
 var cdmx_map = L.geoJson(cdmxjson, {style: style}).addTo(map);
 
 
-
-// TO REVIEW: NOW JUST COMMENTS
-{
-/*
-function hoverFeature(h) {
-  var layer = h.target;
-  layer.setStyle({
-    weight: 5,
-    color: '#15DBCC',
-    dashArray: '',
-    fillOpacity: 0.7
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-    layer.bringToFront();
-  } 
-}
-
-function resetHighlight(e) {
-  geojson.resetStyle(e.target);
-}
-
-var geojson;
-// ... our listeners
-geojson = L.geoJson(cdmxjson);
-
-function zoomToFeature(e) {
-  map.fitBounds(e.target.getBounds());
-}
-
-function onEachFeature(feature, layer) {
-  layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-      click: zoomToFeature
-  });
-}
-
-geojson = L.geoJson(cdmxjson, {
-  style: style,
-  onEachFeature: onEachFeature
-}).addTo(map);
-
-*/
-
-/* POSSIBLE ICONS
-"ion-android-funnel"
-ion-android--home
-ion-android-locate
-ion-android-navigate
-*/
-}
-
-
 // ICONS for Active and Unactive stations.
 var icons = {
   ACTIVE: L.ExtraMarkers.icon({
@@ -195,16 +141,6 @@ d3.csv('../static/res/cdmx_stations.csv', function(error, stationData) {
     newMarker.addTo(layers[stationStatusCode]).bindPopup(station.nom_estac);  // maybe here .bindPopup(station.nom_estac)
     // END: NO CLUSTERS ================================================ SEE WHERE .bindPopup(station.nom_estac)
 
-    /*
-    // With CLUSTERS ================================================
-    markers.addLayer(L.marker([station.latitud, station.longitud], {
-      icon: icons[stationStatusCode]
-    })).bindPopup(station.nom_estac);
-    map.addLayer(markers);
-    // END CLUSTERS ================================================
-    */
-    
-
   } // END for statios: active/unactive  
 }); // END read_csv STATIONS
 
@@ -229,29 +165,3 @@ d3.csv('../static/res/industrial_parks.csv', function(error, parkData) {
               .bindPopup(park_name);
   } // END FOR Industrial parkData
 }); // END read_csv INDUSTRIAL PARKS
-
-
-
-
-// Create the HEAT LAYER, inside the data reading ============ REVIEW =============================================
-//var url = "https://data.sfgov.org/resource/cuks-n6tp.json?$limit=10000";
-/*
-d3.json(url, function(response) {
-  var heatArray = [];
-
-  for (var i = 0; i < response.length; i++) {
-    var location = response[i].location;
-
-    if (location) {
-      heatArray.push([location.coordinates[1], location.coordinates[0]]);
-    }
-  }
-
-  var heat = L.heatLayer(heatArray, {
-    radius: 20,
-    blur: 35
-  }).addTo(map);
-
-});
-*/
-// Create the HEAT LAYER, inside the data reading ==========================================================
